@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calculadora de Potencia de Calefacción Profesional</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header animate__animated animate__fadeInDown">
+      <h1><i class="fas fa-fire-alt"></i> Calculadora de Potencia de Calefacción</h1>
+      <p class="subtitle">Herramienta profesional para cálculo térmico de espacios</p>
+    </div>
+    
+    <form id="calcForm" class="card animate__animated animate__fadeIn">
+      <!-- Sección 1: dimensiones -->
+      <div class="section">
+        <div class="section-header">
+          <i class="fas fa-ruler-combined"></i>
+          <h2>Dimensiones del espacio</h2>
+        </div>
+        <div class="grid">
+          <div class="input-group">
+            <label for="superficie"><i class="fas fa-border-style"></i> Superficie</label>
+            <input type="number" id="superficie" placeholder="m²" min="1" max="1000" required>
+            <div class="input-icon"><i class="fas fa-square"></i></div>
+          </div>
+          <div class="input-group">
+            <label for="altura"><i class="fas fa-arrows-alt-v"></i> Altura</label>
+            <input type="number" id="altura" placeholder="m" min="1" max="10" step="0.1" required>
+            <div class="input-icon"><i class="fas fa-ruler-vertical"></i></div>
+          </div>
+          <div class="input-group">
+            <label for="areaVentanas"><i class="fas fa-window-maximize"></i> Área de ventanas</label>
+            <input type="number" id="areaVentanas" placeholder="m²" min="0" max="100" step="0.1" required>
+            <div class="input-icon"><i class="fas fa-window-restore"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección 2: materiales -->
+      <div class="section">
+        <div class="section-header">
+          <i class="fas fa-cubes"></i>
+          <h2>Materiales de construcción</h2>
+        </div>
+        <div class="grid">
+          <div class="input-group">
+            <label for="tipoMuro"><i class="fas fa-wall"></i> Tipo de muro</label>
+            <select id="tipoMuro">
+              <option value="Ladrillo simple">Ladrillo simple</option>
+              <option value="Ladrillo + aislación">Ladrillo + aislación</option>
+              <option value="Panel SIP">Panel SIP</option>
+              <option value="Hormigón">Hormigón</option>
+              <option value="Madera">Madera</option>
+              <option value="Hormigón armado">Hormigón armado</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="tipoVentana"><i class="fas fa-window-frame"></i> Tipo de ventana</label>
+            <select id="tipoVentana">
+              <option value="Vidrio simple">Vidrio simple</option>
+              <option value="Doble vidrio (DVH)">Doble vidrio (DVH)</option>
+              <option value="Triple vidrio">Triple vidrio</option>
+              <option value="Low-E DVH">Low-E DVH</option>
+              <option value="Ventana PVC">Ventana PVC</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="tipoTecho"><i class="fas fa-home"></i> Tipo de techo</label>
+            <select id="tipoTecho">
+              <option value="Techo de losa">Techo de losa</option>
+              <option value="Chapa sin aislación">Chapa sin aislación</option>
+              <option value="Techo aislado">Techo aislado</option>
+              <option value="Teja + aislación">Teja + aislación</option>
+              <option value="Techo verde">Techo verde</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección 3: condiciones -->
+      <div class="section">
+        <div class="section-header">
+          <i class="fas fa-cloud-sun"></i>
+          <h2>Condiciones ambientales</h2>
+        </div>
+        <div class="grid">
+          <div class="input-group">
+            <label for="tempInterior"><i class="fas fa-thermometer-half"></i> Temperatura interior</label>
+            <input type="number" id="tempInterior" placeholder="°C" min="15" max="30" required>
+            <div class="input-icon"><i class="fas fa-home"></i></div>
+          </div>
+          <div class="input-group">
+            <label for="tempExterior"><i class="fas fa-snowflake"></i> Temperatura exterior</label>
+            <input type="number" id="tempExterior" placeholder="°C" min="-20" max="25" required>
+            <div class="input-icon"><i class="fas fa-mountain"></i></div>
+          </div>
+          <div class="input-group">
+            <label for="renovaciones"><i class="fas fa-wind"></i> Renovaciones/hora</label>
+            <input type="number" step="0.1" id="renovaciones" placeholder="R/h" min="0.1" max="5" required>
+            <div class="input-icon"><i class="fas fa-exchange-alt"></i></div>
+          </div>
+          <div class="input-group">
+            <label for="mesSelect"><i class="fas fa-calendar-alt"></i> Mes para cálculo</label>
+            <select id="mesSelect">
+              <option value="Enero">Enero</option>
+              <option value="Febrero">Febrero</option>
+              <option value="Marzo">Marzo</option>
+              <option value="Abril">Abril</option>
+              <option value="Mayo">Mayo</option>
+              <option value="Junio">Junio</option>
+              <option value="Julio">Julio</option>
+              <option value="Agosto">Agosto</option>
+              <option value="Septiembre">Septiembre</option>
+              <option value="Octubre">Octubre</option>
+              <option value="Noviembre">Noviembre</option>
+              <option value="Diciembre">Diciembre</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="humedadExterior"><i class="fas fa-tint"></i> Humedad exterior (%)</label>
+            <input type="number" id="humedadExterior" placeholder="%" min="0" max="100" step="1">
+            <div class="input-icon"><i class="fas fa-cloud-rain"></i></div>
+          </div>
+          <div class="input-group">
+            <label for="humedadInterior"><i class="fas fa-tint"></i> Humedad interior (%)</label>
+            <input type="number" id="humedadInterior" placeholder="%" min="0" max="100" step="1">
+            <div class="input-icon"><i class="fas fa-house-damage"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección 4: factores adicionales -->
+      <div class="section">
+        <div class="section-header">
+          <i class="fas fa-sliders-h"></i>
+          <h2>Factores adicionales</h2>
+        </div>
+        <div class="grid">
+          <div class="input-group">
+            <label for="orientacion"><i class="fas fa-compass"></i> Orientación principal</label>
+            <select id="orientacion">
+              <option value="Norte">Norte</option>
+              <option value="Sur">Sur</option>
+              <option value="Este">Este</option>
+              <option value="Oeste">Oeste</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="pisoInferior"><i class="fas fa-layer-group"></i> Tipo de piso</label>
+            <select id="pisoInferior">
+              <option value="Sobre suelo">Sobre suelo</option>
+              <option value="Sobre espacio calefaccionado">Sobre espacio calefaccionado</option>
+              <option value="Sobre sótano no calefaccionado">Sobre sótano no calefaccionado</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="ocupantes"><i class="fas fa-users"></i> Número de ocupantes</label>
+            <input type="number" id="ocupantes" placeholder="Personas" min="1" max="20" value="2" required>
+            <div class="input-icon"><i class="fas fa-user-friends"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección 5: parámetros económicos -->
+      <div class="section">
+        <div class="section-header">
+          <i class="fas fa-calculator"></i>
+          <h2>Parámetros económicos</h2>
+        </div>
+        <div class="grid">
+          <div class="input-group">
+            <label for="tipoEnergia"><i class="fas fa-bolt"></i> Tipo de energía</label>
+            <select id="tipoEnergia">
+              <option value="electricidad">Electricidad</option>
+              <option value="gas">Gas natural</option>
+              <option value="gasoleo">Gasóleo</option>
+              <option value="pellets">Pellets</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="costoEnergia"><i class="fas fa-euro-sign"></i> Costo energía (USD/kWh o USD/m³)</label>
+            <input type="number" id="costoEnergia" placeholder="0.15" min="0" step="0.01" value="0.15">
+            <div class="input-icon"><i class="fas fa-money-bill-wave"></i></div>
+          </div>
+          <div class="input-group">
+            <label for="horasUso"><i class="fas fa-clock"></i> Horas uso diario</label>
+            <input type="number" id="horasUso" placeholder="Horas" min="1" max="24" step="0.5" value="12">
+            <div class="input-icon"><i class="fas fa-hourglass-half"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn btn-primary animate__animated animate__pulse animate__infinite animate__slower">
+          <i class="fas fa-calculator"></i> Calcular potencia
+        </button>
+        <button type="button" id="resetBtn" class="btn btn-secondary">
+          <i class="fas fa-broom"></i> Limpiar datos
+        </button>
+      </div>
+    </form>
+
+    <!-- Sección de recomendaciones -->
+    <div id="recomendaciones" class="card hidden">
+      <div class="section-header">
+        <i class="fas fa-lightbulb"></i>
+        <h2>Recomendaciones</h2>
+      </div>
+      <div id="recomendacionesContent"></div>
+    </div>
+  </div>
+
+  <!-- Modal de resultado -->
+  <div id="modalBg" class="modal-bg">
+    <div class="modal">
+      <div class="modal-header">
+        <h3><i class="fas fa-chart-bar"></i> Resultado del cálculo</h3>
+        <span id="closeBtn" class="close-btn">&times;</span>
+      </div>
+      <div class="modal-content">
+        <div class="resultado-container">
+          <div class="gauge-container">
+            <div class="gauge">
+              <div class="gauge-value" id="gaugeValue"></div>
+            </div>
+            <div class="gauge-center" id="gaugeCenterValue">--</div>
+            <div class="gauge-label">Potencia requerida</div>
+          </div>
+          <div class="resultado-detalle">
+            <p id="resWatts" class="resultado-principal">Carga térmica: -- W</p>
+            <p id="resKWatts" class="resultado-secundario">Equivalente a: -- kW</p>
+            <div class="resultado-extra">
+              <div class="extra-item">
+                <i class="fas fa-fire"></i>
+                <span id="resCargaSensible">-- W sensible</span>
+              </div>
+              <div class="extra-item">
+                <i class="fas fa-tint"></i>
+                <span id="resCargaLatente">-- W latente</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="detalle-section">
+          <h4><i class="fas fa-chart-pie"></i> Desglose de pérdidas térmicas</h4>
+          <div class="detalle-grid">
+            <div class="detalle-item">
+              <span class="detalle-etiqueta"><i class="fas fa-wall"></i> Muros:</span>
+              <span id="perdidaMuros" class="detalle-valor">-- W</span>
+            </div>
+            <div class="detalle-item">
+              <span class="detalle-etiqueta"><i class="fas fa-window-maximize"></i> Ventanas:</span>
+              <span id="perdidaVentanas" class="detalle-valor">-- W</span>
+            </div>
+            <div class="detalle-item">
+              <span class="detalle-etiqueta"><i class="fas fa-home"></i> Techo:</span>
+              <span id="perdidaTecho" class="detalle-valor">-- W</span>
+            </div>
+            <div class="detalle-item">
+              <span class="detalle-etiqueta"><i class="fas fa-wind"></i> Infiltración:</span>
+              <span id="perdidaInfiltracion" class="detalle-valor">-- W</span>
+            </div>
+            <div class="detalle-item">
+              <span class="detalle-etiqueta"><i class="fas fa-layer-group"></i> Piso:</span>
+              <span id="perdidaPiso" class="detalle-valor">-- W</span>
+            </div>
+            <div class="detalle-item">
+              <span class="detalle-etiqueta"><i class="fas fa-users"></i> Ocupantes:</span>
+              <span id="gananciaOcupantes" class="detalle-valor">-- W</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="detalle-section">
+          <h4><i class="fas fa-chart-line"></i> Análisis de costos</h4>
+          <div class="detalle-grid">
+            <div class="detalle-item">
+              <span class="detalle-etiqueta"><i class="fas fa-calendar-day"></i> Costo diario:</span>
+              <span id="resCostoDiario" class="detalle-valor costo">--</span>
+            </div>
+            <div class="detalle-item">
+              <span class="detalle-etiqueta"><i class="fas fa-calendar-week"></i> Costo mensual:</span>
+              <span id="resCostoMensual" class="detalle-valor costo">--</span>
+            </div>
+            <div class="detalle-item">
+              <span class="detalle-etiqueta"><i class="fas fa-calendar-alt"></i> Costo anual:</span>
+              <span id="resCostoAnual" class="detalle-valor costo">--</span>
+            </div>
+            <div class="detalle-item">
+              <span class="detalle-etiqueta"><i class="fas fa-bolt"></i> Consumo diario:</span>
+              <span id="resConsumoDiario" class="detalle-valor">-- kWh</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="detalle-section">
+          <h4><i class="fas fa-cogs"></i> Recomendaciones técnicas</h4>
+          <div class="detalle-item full-width">
+            <span class="detalle-etiqueta"><i class="fas fa-project-diagram"></i> Zonificación:</span>
+            <span id="resZonificacion" class="detalle-valor">--</span>
+          </div>
+          <div class="detalle-item full-width">
+            <span class="detalle-etiqueta"><i class="fas fa-lightbulb"></i> Sistema recomendado:</span>
+            <span id="resSistemaRecomendado" class="detalle-valor">--</span>
+          </div>
+        </div>
+        
+        <div class="botones-accion">
+          <button id="btnGuardar" class="btn btn-secondary">
+            <i class="fas fa-save"></i> Guardar resultado
+          </button>
+          <button id="btnGenerarPDF" class="btn btn-secondary">
+            <i class="fas fa-file-pdf"></i> Generar PDF
+          </button>
+          <button id="btnCerrar" class="btn btn-primary">
+            <i class="fas fa-check"></i> Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="animate__animated animate__fadeInUp">
+    <p>© 2025 - Calculadora de Potencia de Calefacción Profesional</p>
+    <p>Versión 3.0 - Desarrollada para uso profesional</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
