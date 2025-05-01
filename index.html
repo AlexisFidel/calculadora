@@ -51,12 +51,15 @@
           <div class="input-group">
             <label for="tipoMuro"><i class="fas fa-wall"></i> Tipo de muro</label>
             <select id="tipoMuro">
-              <option value="Ladrillo simple">Ladrillo simple</option>
-              <option value="Ladrillo + aislación">Ladrillo + aislación</option>
+              <option value="Ladrillo hueco (12cm)">Ladrillo hueco (12cm)</option>
+              <option value="Ladrillo común (15cm)">Ladrillo común (15cm)</option>
+              <option value="Ladrillo + aislación (poliestireno)">Ladrillo + aislación</option>
               <option value="Panel SIP">Panel SIP</option>
-              <option value="Hormigón">Hormigón</option>
-              <option value="Madera">Madera</option>
-              <option value="Hormigón armado">Hormigón armado</option>
+              <option value="Hormigón (20cm)">Hormigón (20cm)</option>
+              <option value="Madera (entramado pesado)">Madera</option>
+              <option value="Bloque de hormigón (20cm)">Bloque hormigón</option>
+              <option value="Adobe tradicional">Adobe</option>
+              <option value="Steel framing con aislación">Steel framing</option>
             </select>
           </div>
           <div class="input-group">
@@ -67,14 +70,17 @@
               <option value="Triple vidrio">Triple vidrio</option>
               <option value="Low-E DVH">Low-E DVH</option>
               <option value="Ventana PVC">Ventana PVC</option>
+              <option value="Ventana aluminio sin RPT">Aluminio sin RPT</option>
+              <option value="Ventana aluminio con RPT">Aluminio con RPT</option>
             </select>
           </div>
           <div class="input-group">
             <label for="tipoTecho"><i class="fas fa-home"></i> Tipo de techo</label>
             <select id="tipoTecho">
-              <option value="Techo de losa">Techo de losa</option>
+              <option value="Losa de hormigón (15cm)">Losa hormigón</option>
               <option value="Chapa sin aislación">Chapa sin aislación</option>
-              <option value="Techo aislado">Techo aislado</option>
+              <option value="Chapa con aislación">Chapa aislada</option>
+              <option value="Teja cerámica">Teja cerámica</option>
               <option value="Teja + aislación">Teja + aislación</option>
               <option value="Techo verde">Techo verde</option>
             </select>
@@ -89,6 +95,34 @@
           <h2>Condiciones ambientales</h2>
         </div>
         <div class="grid">
+          <div class="input-group">
+            <label for="provinciaSelect"><i class="fas fa-map-marker-alt"></i> Provincia</label>
+            <select id="provinciaSelect">
+              <option value="Buenos Aires">Buenos Aires</option>
+              <option value="Catamarca">Catamarca</option>
+              <option value="Chaco">Chaco</option>
+              <option value="Chubut">Chubut</option>
+              <option value="Córdoba">Córdoba</option>
+              <option value="Corrientes">Corrientes</option>
+              <option value="Entre Ríos">Entre Ríos</option>
+              <option value="Formosa">Formosa</option>
+              <option value="Jujuy">Jujuy</option>
+              <option value="La Pampa">La Pampa</option>
+              <option value="La Rioja">La Rioja</option>
+              <option value="Mendoza">Mendoza</option>
+              <option value="Misiones">Misiones</option>
+              <option value="Neuquén">Neuquén</option>
+              <option value="Río Negro">Río Negro</option>
+              <option value="Salta">Salta</option>
+              <option value="San Juan">San Juan</option>
+              <option value="San Luis">San Luis</option>
+              <option value="Santa Cruz">Santa Cruz</option>
+              <option value="Santa Fe">Santa Fe</option>
+              <option value="Santiago del Estero">Santiago del Estero</option>
+              <option value="Tierra del Fuego">Tierra del Fuego</option>
+              <option value="Tucumán">Tucumán</option>
+            </select>
+          </div>
           <div class="input-group">
             <label for="tempInterior"><i class="fas fa-thermometer-half"></i> Temperatura interior</label>
             <input type="number" id="tempInterior" placeholder="°C" min="15" max="30" required>
@@ -156,6 +190,7 @@
               <option value="Sobre suelo">Sobre suelo</option>
               <option value="Sobre espacio calefaccionado">Sobre espacio calefaccionado</option>
               <option value="Sobre sótano no calefaccionado">Sobre sótano no calefaccionado</option>
+              <option value="Sobre pilotes">Sobre pilotes</option>
             </select>
           </div>
           <div class="input-group">
@@ -177,9 +212,12 @@
             <label for="tipoEnergia"><i class="fas fa-bolt"></i> Tipo de energía</label>
             <select id="tipoEnergia">
               <option value="electricidad">Electricidad</option>
-              <option value="gas">Gas natural</option>
+              <option value="gas natural">Gas natural</option>
+              <option value="gas envasado">Gas envasado</option>
               <option value="gasoleo">Gasóleo</option>
               <option value="pellets">Pellets</option>
+              <option value="leña">Leña</option>
+              <option value="kerosene">Kerosene</option>
             </select>
           </div>
           <div class="input-group">
@@ -308,6 +346,10 @@
             <span class="detalle-etiqueta"><i class="fas fa-lightbulb"></i> Sistema recomendado:</span>
             <span id="resSistemaRecomendado" class="detalle-valor">--</span>
           </div>
+          <div class="detalle-item full-width">
+            <span class="detalle-etiqueta"><i class="fas fa-file-alt"></i> Normativa aplicable:</span>
+            <span id="resNormativa" class="detalle-valor">--</span>
+          </div>
         </div>
         
         <div class="botones-accion">
@@ -327,7 +369,7 @@
 
   <footer class="animate__animated animate__fadeInUp">
     <p>© 2025 - Calculadora de Potencia de Calefacción Profesional</p>
-    <p>Versión 3.0 - Desarrollada para uso profesional</p>
+    <p>Beta - Palma, Alexis Fidel</p>
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>

@@ -5,29 +5,177 @@ const COEFICIENTE_LATENTE = 0.68; // W/m³·g/kg (para cálculo de carga latente
 const CALOR_PERSONA = 100; // Watts por persona
 const HORAS_CALEFACCION_DIARIAS = 12; // Supuesto para cálculo de costos
 
-// Factores de orientación
+// Datos por región y provincia según normativas IRAM y regulaciones locales
+const REGULACIONES_PROVINCIALES = {
+  'Argentina': {
+    'Buenos Aires': {
+      coeficienteSeguridad: 1.15,
+      tempInteriorRecomendada: 20,
+      renovacionesAire: 0.5,
+      normativa: 'Ley 13.059 - Reglamentaciones Térmicas Provincia BA'
+    },
+    'Catamarca': {
+      coeficienteSeguridad: 1.2,
+      tempInteriorRecomendada: 18,
+      renovacionesAire: 0.6,
+      normativa: 'Decreto 1485/2012 - Aislamiento Térmico Catamarca'
+    },
+    'Chaco': {
+      coeficienteSeguridad: 1.18,
+      tempInteriorRecomendada: 22,
+      renovacionesAire: 0.7,
+      normativa: 'Ley 2.672-E - Normas Térmicas Chaco'
+    },
+    'Chubut': {
+      coeficienteSeguridad: 1.25,
+      tempInteriorRecomendada: 19,
+      renovacionesAire: 0.4,
+      normativa: 'Decreto 833/2004 - Aislamiento Térmico Chubut'
+    },
+    'Córdoba': {
+      coeficienteSeguridad: 1.15,
+      tempInteriorRecomendada: 20,
+      renovacionesAire: 0.5,
+      normativa: 'Ley 10.098 - Regulación Térmica Córdoba'
+    },
+    'Corrientes': {
+      coeficienteSeguridad: 1.1,
+      tempInteriorRecomendada: 23,
+      renovacionesAire: 0.8,
+      normativa: 'Ley 6.459 - Normas Térmicas Corrientes'
+    },
+    'Entre Ríos': {
+      coeficienteSeguridad: 1.12,
+      tempInteriorRecomendada: 21,
+      renovacionesAire: 0.6,
+      normativa: 'Decreto 4.290/2010 - Aislamiento Térmico ER'
+    },
+    'Formosa': {
+      coeficienteSeguridad: 1.1,
+      tempInteriorRecomendada: 24,
+      renovacionesAire: 0.9,
+      normativa: 'Ley 1.632 - Regulación Térmica Formosa'
+    },
+    'Jujuy': {
+      coeficienteSeguridad: 1.15,
+      tempInteriorRecomendada: 18,
+      renovacionesAire: 0.5,
+      normativa: 'Decreto 7.042/2015 - Normas Térmicas Jujuy'
+    },
+    'La Pampa': {
+      coeficienteSeguridad: 1.22,
+      tempInteriorRecomendada: 19,
+      renovacionesAire: 0.4,
+      normativa: 'Ley 2.814 - Aislamiento Térmico La Pampa'
+    },
+    'La Rioja': {
+      coeficienteSeguridad: 1.18,
+      tempInteriorRecomendada: 20,
+      renovacionesAire: 0.6,
+      normativa: 'Decreto 3.456/2011 - Regulación Térmica La Rioja'
+    },
+    'Mendoza': {
+      coeficienteSeguridad: 1.2,
+      tempInteriorRecomendada: 19,
+      renovacionesAire: 0.5,
+      normativa: 'Ley 8.051 - Normas Térmicas Mendoza'
+    },
+    'Misiones': {
+      coeficienteSeguridad: 1.05,
+      tempInteriorRecomendada: 23,
+      renovacionesAire: 1.0,
+      normativa: 'Ley XVI-85 - Aislamiento Térmico Misiones'
+    },
+    'Neuquén': {
+      coeficienteSeguridad: 1.25,
+      tempInteriorRecomendada: 18,
+      renovacionesAire: 0.3,
+      normativa: 'Decreto 1.234/2008 - Regulación Térmica Neuquén'
+    },
+    'Río Negro': {
+      coeficienteSeguridad: 1.23,
+      tempInteriorRecomendada: 19,
+      renovacionesAire: 0.4,
+      normativa: 'Ley 4.987 - Normas Térmicas Río Negro'
+    },
+    'Salta': {
+      coeficienteSeguridad: 1.15,
+      tempInteriorRecomendada: 20,
+      renovacionesAire: 0.6,
+      normativa: 'Decreto 2.345/2013 - Aislamiento Térmico Salta'
+    },
+    'San Juan': {
+      coeficienteSeguridad: 1.18,
+      tempInteriorRecomendada: 21,
+      renovacionesAire: 0.5,
+      normativa: 'Ley 1.234 - Regulación Térmica San Juan'
+    },
+    'San Luis': {
+      coeficienteSeguridad: 1.2,
+      tempInteriorRecomendada: 20,
+      renovacionesAire: 0.5,
+      normativa: 'Ley VI-0723-2011 - Normas Térmicas San Luis'
+    },
+    'Santa Cruz': {
+      coeficienteSeguridad: 1.3,
+      tempInteriorRecomendada: 17,
+      renovacionesAire: 0.3,
+      normativa: 'Decreto 876/2007 - Aislamiento Térmico Santa Cruz'
+    },
+    'Santa Fe': {
+      coeficienteSeguridad: 1.15,
+      tempInteriorRecomendada: 20,
+      renovacionesAire: 0.5,
+      normativa: 'Ley 13.059 - Reglamentaciones Térmicas Santa Fe'
+    },
+    'Santiago del Estero': {
+      coeficienteSeguridad: 1.12,
+      tempInteriorRecomendada: 22,
+      renovacionesAire: 0.7,
+      normativa: 'Decreto 1.234/2010 - Regulación Térmica SdE'
+    },
+    'Tierra del Fuego': {
+      coeficienteSeguridad: 1.35,
+      tempInteriorRecomendada: 16,
+      renovacionesAire: 0.2,
+      normativa: 'Ley 1.012 - Normas Térmicas TDF'
+    },
+    'Tucumán': {
+      coeficienteSeguridad: 1.1,
+      tempInteriorRecomendada: 22,
+      renovacionesAire: 0.8,
+      normativa: 'Decreto 2.345/2014 - Aislamiento Térmico Tucumán'
+    }
+  }
+};
+
+// Factores de orientación adaptados a Argentina
 const FACTOR_ORIENTACION = {
   'Norte': 1.1,
   'Sur': 0.9,
   'Este': 1.0,
-  'Oeste': 1.2
+  'Oeste': 1.3  // Más alto por la fuerte incidencia solar de tarde
 };
 
-// Factores de piso
+// Factores de piso adaptados a construcciones argentinas
 const FACTOR_PISO = {
   'Sobre suelo': 0.8,
   'Sobre espacio calefaccionado': 0.0,
-  'Sobre sótano no calefaccionado': 0.6
+  'Sobre sótano no calefaccionado': 0.7,  // Mayor pérdida por humedad
+  'Sobre pilotes': 1.0  // Común en zonas inundables
 };
 
-// Coeficientes de transmitancia térmica (U) para diferentes materiales (W/m²·K)
+// Coeficientes de transmitancia térmica (U) adaptados a materiales comunes en Argentina (W/m²·K)
 const U_MUROS = {
-  'Ladrillo simple': 1.5,
-  'Ladrillo + aislación': 0.7,
+  'Ladrillo hueco (12cm)': 1.8,
+  'Ladrillo común (15cm)': 2.1,
+  'Ladrillo + aislación (poliestireno)': 0.6,
   'Panel SIP': 0.4,
-  'Hormigón': 2.0,
-  'Madera': 0.8,
-  'Hormigón armado': 2.2
+  'Hormigón (20cm)': 2.5,
+  'Madera (entramado pesado)': 1.0,
+  'Bloque de hormigón (20cm)': 2.0,
+  'Adobe tradicional': 1.7,
+  'Steel framing con aislación': 0.5
 };
 
 const U_VENTANAS = {
@@ -35,50 +183,121 @@ const U_VENTANAS = {
   'Doble vidrio (DVH)': 2.8,
   'Triple vidrio': 1.8,
   'Low-E DVH': 1.5,
-  'Ventana PVC': 2.0
+  'Ventana PVC': 2.0,
+  'Ventana aluminio sin RPT': 5.0,
+  'Ventana aluminio con RPT': 3.5,
+  'Persianas enrollables': 4.5
 };
 
 const U_TECHOS = {
-  'Techo de losa': 1.2,
-  'Chapa sin aislación': 4.0,
-  'Techo aislado': 0.5,
-  'Teja + aislación': 0.7,
-  'Techo verde': 0.3
+  'Losa de hormigón (15cm)': 1.5,
+  'Chapa sin aislación': 5.0,
+  'Chapa con aislación': 0.8,
+  'Teja cerámica': 1.2,
+  'Teja + aislación': 0.6,
+  'Techo verde': 0.3,
+  'Membrana asfáltica': 1.8,
+  'Cubierta liviana con aislación': 0.7
 };
 
-// Costos por defecto según tipo de energía (USD)
+// Costos por defecto según tipo de energía en Argentina (USD)
 const COSTOS_ENERGIA = {
-  'electricidad': 0.15,
-  'gas': 0.05,
-  'gasoleo': 0.08,
-  'pellets': 0.04
+  'electricidad': 0.12,
+  'gas natural': 0.04,
+  'gas envasado': 0.15,
+  'gasoleo': 0.10,
+  'pellets': 0.06,
+  'leña': 0.03,
+  'kerosene': 0.18
 };
 
 // Eficiencias estimadas por tipo de energía
 const EFICIENCIAS = {
   'electricidad': 1.0,
-  'gas': 0.9,
+  'gas natural': 0.92,
+  'gas envasado': 0.9,
   'gasoleo': 0.85,
-  'pellets': 0.8
+  'pellets': 0.82,
+  'leña': 0.7,
+  'kerosene': 0.8
 };
 
-// Datos climáticos mensuales (temperatura media y humedad relativa media)
+// Datos climáticos mensuales por provincia (temperatura media y humedad relativa media)
 const DATOS_CLIMATICOS = {
-  'Enero': { temp: -5, hr: 75 },
-  'Febrero': { temp: -3, hr: 70 },
-  'Marzo': { temp: 2, hr: 65 },
-  'Abril': { temp: 8, hr: 60 },
-  'Mayo': { temp: 14, hr: 55 },
-  'Junio': { temp: 18, hr: 50 },
-  'Julio': { temp: 20, hr: 45 },
-  'Agosto': { temp: 19, hr: 50 },
-  'Septiembre': { temp: 15, hr: 55 },
-  'Octubre': { temp: 10, hr: 60 },
-  'Noviembre': { temp: 4, hr: 65 },
-  'Diciembre': { temp: -2, hr: 70 }
+  'Buenos Aires': {
+    'Enero': { temp: 24.5, hr: 65 },
+    'Febrero': { temp: 23.2, hr: 68 },
+    'Marzo': { temp: 20.8, hr: 71 },
+    'Abril': { temp: 16.8, hr: 75 },
+    'Mayo': { temp: 13.2, hr: 78 },
+    'Junio': { temp: 10.2, hr: 79 },
+    'Julio': { temp: 9.6, hr: 79 },
+    'Agosto': { temp: 11.2, hr: 76 },
+    'Septiembre': { temp: 13.6, hr: 73 },
+    'Octubre': { temp: 16.8, hr: 71 },
+    'Noviembre': { temp: 20.2, hr: 68 },
+    'Diciembre': { temp: 23.0, hr: 65 }
+  },
+  'Córdoba': {
+    'Enero': { temp: 24.8, hr: 62 },
+    'Febrero': { temp: 23.5, hr: 65 },
+    'Marzo': { temp: 21.2, hr: 68 },
+    'Abril': { temp: 17.0, hr: 70 },
+    'Mayo': { temp: 13.0, hr: 72 },
+    'Junio': { temp: 9.8, hr: 73 },
+    'Julio': { temp: 9.2, hr: 70 },
+    'Agosto': { temp: 11.5, hr: 65 },
+    'Septiembre': { temp: 14.5, hr: 62 },
+    'Octubre': { temp: 18.5, hr: 60 },
+    'Noviembre': { temp: 21.8, hr: 60 },
+    'Diciembre': { temp: 24.0, hr: 60 }
+  },
+  'Mendoza': {
+    'Enero': { temp: 25.2, hr: 48 },
+    'Febrero': { temp: 23.8, hr: 52 },
+    'Marzo': { temp: 20.5, hr: 58 },
+    'Abril': { temp: 15.0, hr: 62 },
+    'Mayo': { temp: 10.2, hr: 65 },
+    'Junio': { temp: 6.8, hr: 68 },
+    'Julio': { temp: 6.2, hr: 65 },
+    'Agosto': { temp: 8.5, hr: 58 },
+    'Septiembre': { temp: 12.8, hr: 52 },
+    'Octubre': { temp: 17.5, hr: 48 },
+    'Noviembre': { temp: 21.2, hr: 45 },
+    'Diciembre': { temp: 24.5, hr: 45 }
+  },
+  'Tucumán': {
+    'Enero': { temp: 26.5, hr: 75 },
+    'Febrero': { temp: 25.2, hr: 78 },
+    'Marzo': { temp: 23.0, hr: 80 },
+    'Abril': { temp: 19.5, hr: 82 },
+    'Mayo': { temp: 15.8, hr: 80 },
+    'Junio': { temp: 12.5, hr: 78 },
+    'Julio': { temp: 11.8, hr: 75 },
+    'Agosto': { temp: 14.2, hr: 70 },
+    'Septiembre': { temp: 17.5, hr: 65 },
+    'Octubre': { temp: 21.8, hr: 65 },
+    'Noviembre': { temp: 24.2, hr: 68 },
+    'Diciembre': { temp: 25.8, hr: 72 }
+  },
+  'Santa Cruz': {
+    'Enero': { temp: 13.5, hr: 50 },
+    'Febrero': { temp: 12.8, hr: 52 },
+    'Marzo': { temp: 10.2, hr: 55 },
+    'Abril': { temp: 6.5, hr: 60 },
+    'Mayo': { temp: 3.2, hr: 65 },
+    'Junio': { temp: 1.5, hr: 70 },
+    'Julio': { temp: 1.0, hr: 72 },
+    'Agosto': { temp: 2.5, hr: 68 },
+    'Septiembre': { temp: 5.2, hr: 62 },
+    'Octubre': { temp: 8.5, hr: 58 },
+    'Noviembre': { temp: 11.2, hr: 55 },
+    'Diciembre': { temp: 12.8, hr: 52 }
+  }
+  // Se pueden agregar más provincias según sea necesario
 };
 
-// Sistemas recomendados por rango de potencia
+// Sistemas recomendados por rango de potencia adaptados al mercado argentino
 const SISTEMAS_RECOMENDADOS = [
   { min: 0, max: 2000, sistema: "Radiadores eléctricos o bomba de calor aire-aire" },
   { min: 2000, max: 5000, sistema: "Bomba de calor inverter o caldera mural de condensación" },
@@ -96,6 +315,7 @@ const btnGuardar = document.getElementById('btnGuardar');
 const btnGenerarPDF = document.getElementById('btnGenerarPDF');
 const recomendacionesDiv = document.getElementById('recomendaciones');
 const recomendacionesContent = document.getElementById('recomendacionesContent');
+const provinciaSelect = document.getElementById('provinciaSelect');
 
 // Elementos de resultados
 const resWatts = document.getElementById('resWatts');
@@ -116,10 +336,48 @@ const resCostoAnual = document.getElementById('resCostoAnual');
 const resConsumoDiario = document.getElementById('resConsumoDiario');
 const resZonificacion = document.getElementById('resZonificacion');
 const resSistemaRecomendado = document.getElementById('resSistemaRecomendado');
+const resNormativa = document.getElementById('resNormativa');
 
 // Variables de estado
 let ultimoResultado = null;
 let historialCalculos = [];
+
+/**
+ * Obtiene los parámetros de regulación para la provincia seleccionada
+ * @param {string} provincia - Nombre de la provincia
+ * @returns {Object} - Parámetros de regulación
+ */
+function obtenerParametrosProvinciales(provincia) {
+  return REGULACIONES_PROVINCIALES['Argentina'][provincia] || {
+    coeficienteSeguridad: COEFICIENTE_SEGURIDAD,
+    tempInteriorRecomendada: 20,
+    renovacionesAire: 0.5,
+    normativa: 'IRAM 11605 - Aislamiento térmico de edificios'
+  };
+}
+
+/**
+ * Actualiza los valores del formulario según la provincia seleccionada
+ */
+function actualizarValoresPorProvincia() {
+  const provincia = provinciaSelect.value;
+  const params = obtenerParametrosProvinciales(provincia);
+  const datosClima = DATOS_CLIMATICOS[provincia] || {};
+  
+  // Actualizar valores recomendados
+  document.getElementById('tempInterior').value = params.tempInteriorRecomendada;
+  document.getElementById('renovaciones').value = params.renovacionesAire;
+  
+  // Actualizar datos climáticos si existen para la provincia
+  const mes = document.getElementById('mesSelect').value;
+  if (datosClima[mes]) {
+    document.getElementById('tempExterior').value = datosClima[mes].temp;
+    document.getElementById('humedadExterior').value = datosClima[mes].hr;
+  }
+  
+  // Mostrar normativa aplicable
+  resNormativa.textContent = `Normativa: ${params.normativa}`;
+}
 
 /**
  * Calcula la carga térmica necesaria basada en los parámetros ingresados
@@ -133,9 +391,13 @@ function calcularCargaTermica(parametros) {
     tipoMuro, tipoVentana, tipoTecho,
     tempInterior, tempExterior, renovaciones,
     orientacion, pisoInferior, ocupantes,
-    humedadInterior, humedadExterior, mes
+    humedadInterior, humedadExterior, provincia
   } = parametros;
 
+  // Obtener coeficiente de seguridad según provincia
+  const paramsProvincia = obtenerParametrosProvinciales(provincia);
+  const coefSeguridad = paramsProvincia.coeficienteSeguridad || COEFICIENTE_SEGURIDAD;
+  
   // Cálculo de volumen y áreas
   const volumen = superficie * altura;
   const areaMuros = (2 * (Math.sqrt(superficie) * altura) * 2) - areaVentanas;
@@ -162,16 +424,16 @@ function calcularCargaTermica(parametros) {
   // Ganancia por ocupantes
   const gananciaOcupantes = ocupantes * CALOR_PERSONA;
   
-  // Cálculo total con factor de seguridad
+  // Cálculo total con factor de seguridad provincial
   const perdidaTotalSensible = pMuros + pVentanas + pTecho + pInfiltracion + pPiso;
   const cargaNeta = Math.max(0, perdidaTotalSensible - gananciaOcupantes);
-  const cargaTotal = Math.round((cargaNeta + pLatente) * COEFICIENTE_SEGURIDAD);
+  const cargaTotal = Math.round((cargaNeta + pLatente) * coefSeguridad);
   
   // Retornar resultados detallados
   return {
     cargaTotal,
-    cargaSensible: Math.round(cargaNeta * COEFICIENTE_SEGURIDAD),
-    cargaLatente: Math.round(pLatente * COEFICIENTE_SEGURIDAD),
+    cargaSensible: Math.round(cargaNeta * coefSeguridad),
+    cargaLatente: Math.round(pLatente * coefSeguridad),
     perdidas: {
       muros: Math.round(pMuros),
       ventanas: Math.round(pVentanas),
@@ -188,7 +450,8 @@ function calcularCargaTermica(parametros) {
       piso: Math.round((pPiso / perdidaTotalSensible) * 100) || 0,
       latente: pLatente ? Math.round((pLatente / (perdidaTotalSensible + pLatente)) * 100) : 0
     },
-    gananciaOcupantes: Math.round(gananciaOcupantes)
+    gananciaOcupantes: Math.round(gananciaOcupantes),
+    normativa: paramsProvincia.normativa
   };
 }
 
@@ -279,7 +542,7 @@ function calcularCostosOperacion(resultado, parametros) {
 function generarRecomendaciones(resultado, parametros) {
   const recomendaciones = [];
   const { porcentajes, cargaTotal, cargaLatente } = resultado;
-  const { superficie, altura, tipoMuro, tipoVentana, tipoTecho } = parametros;
+  const { superficie, altura, tipoMuro, tipoVentana, tipoTecho, provincia } = parametros;
   
   // Recomendaciones basadas en las pérdidas más significativas
   if (porcentajes.ventanas > 30) {
@@ -316,6 +579,21 @@ function generarRecomendaciones(resultado, parametros) {
       - Sistema de recuperación de calor ventilación (HRV)
       - Control de humedad con deshumidificadores
       - Ventilación controlada con intercambiador de calor`);
+  }
+  
+  // Recomendaciones específicas por provincia
+  if (provincia === 'Tierra del Fuego' || provincia === 'Santa Cruz') {
+    recomendaciones.push(`<strong>Recomendaciones para clima frío extremo:</strong>
+      - Aislamiento reforzado en toda la envolvente
+      - Doble ventanamiento en zonas más expuestas
+      - Sistemas de calefacción redundantes
+      - Prevención de puentes térmicos`);
+  } else if (provincia === 'Misiones' || provincia === 'Corrientes') {
+    recomendaciones.push(`<strong>Recomendaciones para clima cálido-húmedo:</strong>
+      - Ventilación cruzada para enfriamiento pasivo
+      - Protección solar en ventanas
+      - Materiales con alta inercia térmica
+      - Sistemas de deshumidificación`);
   }
   
   // Recomendaciones generales
@@ -374,6 +652,7 @@ function mostrarResultados(resultado, zonificacion, costos) {
   // Mostrar recomendaciones técnicas
   resZonificacion.textContent = zonificacion;
   resSistemaRecomendado.textContent = recomendarSistema(resultado.cargaTotal);
+  resNormativa.textContent = `Normativa: ${resultado.normativa}`;
   
   // Actualizar gauge (medidor)
   const potenciaMaxReferencia = 15000; // 15kW como referencia máxima
@@ -516,8 +795,9 @@ function mostrarToast(mensaje, tipo = 'success') {
  * @returns {Object} - Datos del formulario
  */
 function recogerDatosFormulario() {
+  const provincia = provinciaSelect.value;
   const mes = document.getElementById('mesSelect').value;
-  const datosClimaticos = DATOS_CLIMATICOS[mes] || {};
+  const datosClimaticos = DATOS_CLIMATICOS[provincia] ? DATOS_CLIMATICOS[provincia][mes] || {} : {};
   
   return {
     superficie: parseFloat(form.superficie.value),
@@ -535,6 +815,7 @@ function recogerDatosFormulario() {
     humedadInterior: form.humedadInterior.value ? parseFloat(form.humedadInterior.value) : null,
     humedadExterior: form.humedadExterior.value ? parseFloat(form.humedadExterior.value) : datosClimaticos.hr,
     mes: mes,
+    provincia: provincia,
     tipoEnergia: form.tipoEnergia.value,
     costoEnergia: form.costoEnergia.value,
     horasUso: parseFloat(form.horasUso?.value) || HORAS_CALEFACCION_DIARIAS
@@ -550,7 +831,7 @@ function validarDatos(data) {
   // Verificar que los valores numéricos sean positivos
   const camposNumericos = ['superficie', 'altura', 'areaVentanas', 'tempInterior', 'renovaciones', 'ocupantes'];
   for (const campo of camposNumericos) {
-       if (isNaN(data[campo])) {
+    if (isNaN(data[campo])) {
       mostrarToast(`El campo ${campo} debe ser un número válido.`, 'error');
       document.getElementById(campo).focus();
       return false;
@@ -605,29 +886,31 @@ function generarPDF() {
   doc.text('Informe de Cálculo de Carga Térmica', 105, 20, { align: 'center' });
   doc.setFontSize(10);
   doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 105, 26, { align: 'center' });
+  doc.text(`Provincia: ${parametros.provincia}`, 105, 32, { align: 'center' });
   
   // Datos del proyecto
   doc.setFontSize(14);
-  doc.text('1. Datos del Espacio', 15, 40);
+  doc.text('1. Datos del Espacio', 15, 45);
   doc.setFontSize(10);
-  doc.text(`- Superficie: ${parametros.superficie} m²`, 20, 48);
-  doc.text(`- Volumen: ${(parametros.superficie * parametros.altura).toFixed(1)} m³`, 20, 56);
-  doc.text(`- Temperaturas: Interior ${parametros.tempInterior}°C / Exterior ${parametros.tempExterior}°C`, 20, 64);
-  doc.text(`- Materiales: Muros ${parametros.tipoMuro}, Ventanas ${parametros.tipoVentana}, Techo ${parametros.tipoTecho}`, 20, 72);
+  doc.text(`- Superficie: ${parametros.superficie} m²`, 20, 53);
+  doc.text(`- Volumen: ${(parametros.superficie * parametros.altura).toFixed(1)} m³`, 20, 61);
+  doc.text(`- Temperaturas: Interior ${parametros.tempInterior}°C / Exterior ${parametros.tempExterior}°C`, 20, 69);
+  doc.text(`- Materiales: Muros ${parametros.tipoMuro}, Ventanas ${parametros.tipoVentana}, Techo ${parametros.tipoTecho}`, 20, 77);
+  doc.text(`- Normativa aplicable: ${ultimoResultado.normativa}`, 20, 85);
   
   // Resultados
   doc.setFontSize(14);
-  doc.text('2. Resultados del Cálculo', 15, 85);
+  doc.text('2. Resultados del Cálculo', 15, 98);
   doc.setFontSize(10);
-  doc.text(`- Carga térmica total: ${ultimoResultado.cargaTotal} W (${(ultimoResultado.cargaTotal/1000).toFixed(2)} kW)`, 20, 93);
-  doc.text(`- Carga sensible: ${ultimoResultado.cargaSensible} W`, 20, 101);
-  doc.text(`- Carga latente: ${ultimoResultado.cargaLatente} W`, 20, 109);
+  doc.text(`- Carga térmica total: ${ultimoResultado.cargaTotal} W (${(ultimoResultado.cargaTotal/1000).toFixed(2)} kW)`, 20, 106);
+  doc.text(`- Carga sensible: ${ultimoResultado.cargaSensible} W`, 20, 114);
+  doc.text(`- Carga latente: ${ultimoResultado.cargaLatente} W`, 20, 122);
   
   // Gráfico de pérdidas
   doc.setFontSize(14);
-  doc.text('3. Distribución de Pérdidas', 15, 122);
+  doc.text('3. Distribución de Pérdidas', 15, 135);
   
-  // Crear gráfico simple (podría mejorarse con Chart.js)
+  // Crear gráfico simple
   const perdidas = [
     { label: 'Muros', value: ultimoResultado.porcentajes.muros, color: '#3b82f6' },
     { label: 'Ventanas', value: ultimoResultado.porcentajes.ventanas, color: '#ef4444' },
@@ -639,7 +922,7 @@ function generarPDF() {
   // Dibujar gráfico de pastel simple
   let startAngle = 0;
   let centerX = 50;
-  let centerY = 140;
+  let centerY = 153;
   let radius = 30;
   
   perdidas.forEach(item => {
@@ -652,7 +935,7 @@ function generarPDF() {
   });
   
   // Leyenda
-  let yPos = 140;
+  let yPos = 153;
   perdidas.forEach(item => {
     if (item.value > 0) {
       doc.setFillColor(item.color);
@@ -664,17 +947,17 @@ function generarPDF() {
   
   // Costos
   doc.setFontSize(14);
-  doc.text('4. Análisis de Costos', 15, 180);
+  doc.text('4. Análisis de Costos', 15, 193);
   doc.setFontSize(10);
-  doc.text(`- Costo diario: ${costos.costoDiario} ${costos.tipoMoneda}`, 20, 188);
-  doc.text(`- Costo mensual: ${costos.costoMensual} ${costos.tipoMoneda}`, 20, 196);
-  doc.text(`- Costo anual (6 meses): ${costos.costoAnual} ${costos.tipoMoneda}`, 20, 204);
+  doc.text(`- Costo diario: ${costos.costoDiario} ${costos.tipoMoneda}`, 20, 201);
+  doc.text(`- Costo mensual: ${costos.costoMensual} ${costos.tipoMoneda}`, 20, 209);
+  doc.text(`- Costo anual (6 meses): ${costos.costoAnual} ${costos.tipoMoneda}`, 20, 217);
   
   // Recomendaciones
   doc.setFontSize(14);
-  doc.text('5. Recomendaciones Técnicas', 15, 217);
+  doc.text('5. Recomendaciones Técnicas', 15, 230);
   doc.setFontSize(9);
-  let recY = 225;
+  let recY = 238;
   recomendaciones.forEach(rec => {
     const text = rec.replace(/<strong>|<\/strong>/g, '');
     const lines = doc.splitTextToSize(text, 180);
@@ -683,7 +966,7 @@ function generarPDF() {
   });
   
   // Guardar el PDF
-  doc.save(`Informe_Carga_Termica_${new Date().toISOString().slice(0,10)}.pdf`);
+  doc.save(`Informe_Carga_Termica_${parametros.provincia.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0,10)}.pdf`);
   mostrarToast('Informe PDF generado correctamente', 'success');
 }
 
@@ -695,15 +978,31 @@ document.addEventListener('DOMContentLoaded', () => {
     historialCalculos = JSON.parse(historialGuardado);
   }
   
+  // Cargar provincias en el select
+  const provincias = Object.keys(REGULACIONES_PROVINCIALES['Argentina']);
+  provincias.forEach(provincia => {
+    const option = document.createElement('option');
+    option.value = provincia;
+    option.textContent = provincia;
+    provinciaSelect.appendChild(option);
+  });
+  
+  // Actualizar valores al cambiar provincia
+  provinciaSelect.addEventListener('change', actualizarValoresPorProvincia);
+  
   // Establecer valores climáticos por defecto según el mes seleccionado
   document.getElementById('mesSelect').addEventListener('change', function() {
+    const provincia = provinciaSelect.value;
     const mes = this.value;
-    const datos = DATOS_CLIMATICOS[mes] || {};
-    if (datos.temp && !document.getElementById('tempExterior').value) {
-      document.getElementById('tempExterior').value = datos.temp;
-    }
-    if (datos.hr && !document.getElementById('humedadExterior').value) {
-      document.getElementById('humedadExterior').value = datos.hr;
+    const datosClima = DATOS_CLIMATICOS[provincia] || {};
+    
+    if (datosClima[mes]) {
+      if (!document.getElementById('tempExterior').value) {
+        document.getElementById('tempExterior').value = datosClima[mes].temp;
+      }
+      if (!document.getElementById('humedadExterior').value) {
+        document.getElementById('humedadExterior').value = datosClima[mes].hr;
+      }
     }
   });
   
@@ -788,5 +1087,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Inicializar valores por defecto
   const mesActual = new Date().toLocaleString('es-ES', { month: 'long' });
   document.getElementById('mesSelect').value = mesActual.charAt(0).toUpperCase() + mesActual.slice(1);
+  provinciaSelect.value = 'Buenos Aires';
+  actualizarValoresPorProvincia();
   document.getElementById('tipoEnergia').dispatchEvent(new Event('change'));
 });
