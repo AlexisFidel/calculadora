@@ -12,139 +12,139 @@ const REGULACIONES_PROVINCIALES = {
       coeficienteSeguridad: 1.15,
       tempInteriorRecomendada: 20,
       renovacionesAire: 0.5,
-      normativa: 'Ley 13.059 - Reglamentaciones Térmicas Provincia BA'
+      normativa: 'Ley 13.059 - Acondicionamiento térmico en construcciones'
     },
     'Catamarca': {
       coeficienteSeguridad: 1.2,
       tempInteriorRecomendada: 18,
       renovacionesAire: 0.6,
-      normativa: 'Decreto 1485/2012 - Aislamiento Térmico Catamarca'
+      normativa: 'IRAM 11603/11605 - Normas nacionales de acondicionamiento térmico'
     },
     'Chaco': {
       coeficienteSeguridad: 1.18,
       tempInteriorRecomendada: 22,
       renovacionesAire: 0.7,
-      normativa: 'Ley 2.672-E - Normas Térmicas Chaco'
+      normativa: 'IRAM 11603/11605 - Normas nacionales de acondicionamiento térmico'
     },
     'Chubut': {
       coeficienteSeguridad: 1.25,
       tempInteriorRecomendada: 19,
       renovacionesAire: 0.4,
-      normativa: 'Decreto 833/2004 - Aislamiento Térmico Chubut'
+      normativa: 'IRAM 11603/11605 - Normas nacionales de acondicionamiento térmico'
     },
     'Córdoba': {
       coeficienteSeguridad: 1.15,
       tempInteriorRecomendada: 20,
       renovacionesAire: 0.5,
-      normativa: 'Ley 10.098 - Regulación Térmica Córdoba'
+      normativa: 'Ordenanza 12425 - Código de Edificación con requisitos térmicos'
     },
     'Corrientes': {
       coeficienteSeguridad: 1.1,
       tempInteriorRecomendada: 23,
       renovacionesAire: 0.8,
-      normativa: 'Ley 6.459 - Normas Térmicas Corrientes'
+      normativa: 'IRAM 11603/11605 - Normas nacionales de acondicionamiento térmico'
     },
     'Entre Ríos': {
       coeficienteSeguridad: 1.12,
       tempInteriorRecomendada: 21,
       renovacionesAire: 0.6,
-      normativa: 'Decreto 4.290/2010 - Aislamiento Térmico ER'
+      normativa: 'IRAM 11603/11605 - Normas nacionales de acondicionamiento térmico'
     },
     'Formosa': {
       coeficienteSeguridad: 1.1,
       tempInteriorRecomendada: 24,
       renovacionesAire: 0.9,
-      normativa: 'Ley 1.632 - Regulación Térmica Formosa'
+      normativa: 'IRAM 11603/11605 - Normas nacionales de acondicionamiento térmico'
     },
     'Jujuy': {
       coeficienteSeguridad: 1.15,
       tempInteriorRecomendada: 18,
       renovacionesAire: 0.5,
-      normativa: 'Decreto 7.042/2015 - Normas Térmicas Jujuy'
+      normativa: 'IRAM 11603/11605 - Normas nacionales de acondicionamiento térmico'
     },
     'La Pampa': {
       coeficienteSeguridad: 1.22,
       tempInteriorRecomendada: 19,
       renovacionesAire: 0.4,
-      normativa: 'Ley 2.814 - Aislamiento Térmico La Pampa'
+      normativa: 'IRAM 11603/11605 - Normas nacionales de acondicionamiento térmico'
     },
     'La Rioja': {
       coeficienteSeguridad: 1.18,
       tempInteriorRecomendada: 20,
       renovacionesAire: 0.6,
-      normativa: 'Decreto 3.456/2011 - Regulación Térmica La Rioja'
+      normativa: 'IRAM 11603/11605 - Normas nacionales de acondicionamiento térmico'
     },
     'Mendoza': {
       coeficienteSeguridad: 1.2,
       tempInteriorRecomendada: 19,
       renovacionesAire: 0.5,
-      normativa: 'Ley 8.051 - Normas Térmicas Mendoza'
+      normativa: 'Ley 4416/80 - Requisitos de construcción y aislación térmica'
     },
     'Misiones': {
       coeficienteSeguridad: 1.05,
       tempInteriorRecomendada: 23,
       renovacionesAire: 1.0,
-      normativa: 'Ley XVI-85 - Aislamiento Térmico Misiones'
+      normativa: 'IRAM 11603/11605 - Normas nacionales de acondicionamiento térmico'
     },
     'Neuquén': {
       coeficienteSeguridad: 1.25,
       tempInteriorRecomendada: 18,
       renovacionesAire: 0.3,
-      normativa: 'Decreto 1.234/2008 - Regulación Térmica Neuquén'
+      normativa: 'Ordenanza 12575 - Requisitos térmicos de edificaciones'
     },
     'Río Negro': {
       coeficienteSeguridad: 1.23,
       tempInteriorRecomendada: 19,
       renovacionesAire: 0.4,
-      normativa: 'Ley 4.987 - Normas Térmicas Río Negro'
+      normativa: 'IRAM 11603/11605 - Normas nacionales de acondicionamiento térmico'
     },
     'Salta': {
       coeficienteSeguridad: 1.15,
       tempInteriorRecomendada: 20,
       renovacionesAire: 0.6,
-      normativa: 'Decreto 2.345/2013 - Aislamiento Térmico Salta'
+      normativa: 'IRAM 11603/11605 - Normas nacionales de acondicionamiento térmico'
     },
     'San Juan': {
       coeficienteSeguridad: 1.18,
       tempInteriorRecomendada: 21,
       renovacionesAire: 0.5,
-      normativa: 'Ley 1.234 - Regulación Térmica San Juan'
+      normativa: 'IRAM 11603/11605 - Normas nacionales de acondicionamiento térmico'
     },
     'San Luis': {
       coeficienteSeguridad: 1.2,
       tempInteriorRecomendada: 20,
       renovacionesAire: 0.5,
-      normativa: 'Ley VI-0723-2011 - Normas Térmicas San Luis'
+      normativa: 'IRAM 11603/11605 - Normas nacionales de acondicionamiento térmico'
     },
     'Santa Cruz': {
       coeficienteSeguridad: 1.3,
       tempInteriorRecomendada: 17,
       renovacionesAire: 0.3,
-      normativa: 'Decreto 876/2007 - Aislamiento Térmico Santa Cruz'
+      normativa: 'IRAM 11603/11605 - Normas nacionales de acondicionamiento térmico'
     },
     'Santa Fe': {
       coeficienteSeguridad: 1.15,
       tempInteriorRecomendada: 20,
       renovacionesAire: 0.5,
-      normativa: 'Ley 13.059 - Reglamentaciones Térmicas Santa Fe'
+      normativa: 'Ordenanza 8757 - Rosario: Aspectos higrotérmicos en construcciones'
     },
     'Santiago del Estero': {
       coeficienteSeguridad: 1.12,
       tempInteriorRecomendada: 22,
       renovacionesAire: 0.7,
-      normativa: 'Decreto 1.234/2010 - Regulación Térmica SdE'
+      normativa: 'IRAM 11603/11605 - Normas nacionales de acondicionamiento térmico'
     },
     'Tierra del Fuego': {
       coeficienteSeguridad: 1.35,
       tempInteriorRecomendada: 16,
       renovacionesAire: 0.2,
-      normativa: 'Ley 1.012 - Normas Térmicas TDF'
+      normativa: 'IRAM 11603/11605 - Normas nacionales de acondicionamiento térmico'
     },
     'Tucumán': {
       coeficienteSeguridad: 1.1,
       tempInteriorRecomendada: 22,
       renovacionesAire: 0.8,
-      normativa: 'Decreto 2.345/2014 - Aislamiento Térmico Tucumán'
+      normativa: 'IRAM 11603/11605 - Normas nacionales de acondicionamiento térmico'
     }
   }
 };
